@@ -2,11 +2,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Journal.Domain.csproj" />
-    <ProjectReference Include="..\DataAccess\Journal.DataAccess.csproj" />
+    <ProjectReference Include="..\Application\Journal.Application.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
