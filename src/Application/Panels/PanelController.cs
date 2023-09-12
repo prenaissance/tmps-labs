@@ -6,6 +6,11 @@ namespace Journal.Application.Panels;
 public class PanelController : IPanelController
 {
     public IPanelState? CurrentState { private get; set; }
+    public void ChangeState(IPanelState newState)
+    {
+        CurrentState = newState;
+        Loop();
+    }
 
     public void Loop()
     {

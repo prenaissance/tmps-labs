@@ -6,4 +6,5 @@ public interface IPanelController
 {
     public IPanelState? CurrentState { set; }
     public void Loop();
+    public void ChangeState(IPanelState newState);
 }

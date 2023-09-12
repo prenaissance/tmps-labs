@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain\Journal.Domain.csproj" />
     <ProjectReference Include="..\DataAccess\Journal.DataAccess.csproj" />
+    <ProjectReference Include="..\Application\Journal.Application.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
