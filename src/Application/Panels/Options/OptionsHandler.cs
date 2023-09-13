@@ -2,26 +2,23 @@ namespace Journal.Application.Panels.Options;
 
 public class OptionsHandler
 {
-    private readonly IDictionary<int, Action> _options;
-    private readonly IDictionary<int, string> _optionsDescriptions;
+    private readonly IDictionary<string, Action> _options;
 
-    public OptionsHandler(IDictionary<int, Action> options, IDictionary<int, string> optionsDescriptions)
+    public OptionsHandler(IDictionary<string, Action> options)
     {
         _options = options;
-        _optionsDescriptions = optionsDescriptions;
     }
-    public IList<int> Options => _options.Keys.ToList();
-    public string OptionsMenu => string.Join("\n", _optionsDescriptions.Select(x => $"{x.Key}. {x.Value}"));
+    public IList<string> Options => _options.Keys.ToList();
 
-    public void HandleOption(int optionNumber)
+    public void HandleOption(string option)
     {
-        if (_options.ContainsKey(optionNumber))
+        if (_options.ContainsKey(option))
         {
-            _options[optionNumber]();
+            _options[option]();
         }
         else
         {
-            throw new KeyNotFoundException($"Option number {optionNumber} not registered");
+            throw new KeyNotFoundException($"Option '{option}' not registered");
         }
     }
 }

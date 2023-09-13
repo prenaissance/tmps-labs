@@ -1,7 +1,8 @@
+using Journal.Application.Abstractions;
+
 namespace Journal.Application.Panels.States.Abstractions;
 
-public interface IPanelState
+public interface IPanelState : IView
 {
-    public void PrintMenu();
-    public void HandleOption(int optionNumber);
+    public void HandleOption(string option);
 }

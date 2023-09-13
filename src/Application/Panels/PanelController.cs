@@ -18,16 +18,6 @@ public class PanelController : IPanelController
         {
             throw new InvalidOperationException("Initial state not initiated");
         }
-        CurrentState.PrintMenu();
-        var option = Console.ReadLine();
-        if (int.TryParse(option, out var optionNumber))
-        {
-            CurrentState.HandleOption(optionNumber);
-        }
-        else
-        {
-            Console.WriteLine("Invalid option, please try again");
-            Loop();
-        }
+        CurrentState.Render();
     }
 }
