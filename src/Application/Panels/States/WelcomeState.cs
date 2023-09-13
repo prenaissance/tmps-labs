@@ -30,24 +30,11 @@ public class WelcomeState : IPanelState
             .Build();
     }
 
-    public void HandleOption(string option)
-    {
-        try
-        {
-            _optionsHandler.HandleOption(option);
-        }
-        catch (KeyNotFoundException e)
-        {
-            Console.WriteLine(e.Message);
-            _panelController.Loop();
-        }
-    }
-
     public void Render()
     {
         Console.WriteLine("Welcome to the Journal Application!");
         Console.WriteLine("You can make journal entries, tag them and some other operations.");
         Console.WriteLine("Please select where you want to store your journal entries:");
-        new OptionMenuView(_optionsHandler.Options, HandleOption).Render();
+        new OptionMenuView(_optionsHandler.Options, _optionsHandler.HandleOption).Render();
     }
 }
