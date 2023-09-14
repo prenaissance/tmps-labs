@@ -1,14 +1,14 @@
-using Journal.DataAccess.JournalEntries.Abstractions;
+using Journal.Application.JournalEntries.Abstractions;
 using Journal.Domain.Models;
 using Journal.Domain.Models.Abstractions;
 
 namespace Journal.DataAccess.JournalEntries;
 
-public class MemoryJournalEntriesRepository : IJournalEntryRepository
+public class MemoryJournalEntryRepository : IJournalEntryRepository
 {
     private readonly IList<JournalEntry> _journalEntries;
 
-    public MemoryJournalEntriesRepository()
+    public MemoryJournalEntryRepository()
     {
         _journalEntries = new List<JournalEntry>();
     }

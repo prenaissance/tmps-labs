@@ -1,17 +1,26 @@
+using Journal.Application.JournalEntries;
+using Journal.Application.JournalEntries.Abstractions;
 using Journal.Application.Panels.Abstractions;
 using Journal.Application.Panels.Options;
 using Journal.Application.Panels.States.Abstractions;
 using Journal.Application.Views;
-using Journal.DataAccess.JournalEntries;
+using Journal.Domain.Factory.Abstractions;
+using Journal.Domain.Models;
 
 namespace Journal.Application.Panels.States;
 
 public class WelcomeState : IPanelState
 {
+    public static class Options
+    {
+        public const string MemoryStorage = "In memory";
+        public const string FileStorage = "In file storage (WIP)";
+    }
     private readonly IPanelController _panelController;
+    public readonly IRepositoryFactory<IJournalEntryRepository, JournalEntry> _journalEntryRepositoryFactory;
     private void HandleMemoryStorageOption()
     {
-        JournalRepositoryContext.JournalEntriesRepository = new MemoryJournalEntriesRepository();
+        JournalRepositoryContext.JournalEntryRepository = _journalEntryRepositoryFactory.CreateRepository(Options.MemoryStorage);
         _panelController.ChangeState(
             new MenuState(_panelController)
         );
@@ -21,12 +30,15 @@ public class WelcomeState : IPanelState
         throw new NotImplementedException();
     }
     private readonly OptionsHandler _optionsHandler;
-    public WelcomeState(IPanelController panelController)
+    public WelcomeState(
+        IPanelController panelController,
+        IRepositoryFactory<IJournalEntryRepository, JournalEntry> journalEntryRepositoryFactory)
     {
         _panelController = panelController;
+        _journalEntryRepositoryFactory = journalEntryRepositoryFactory;
         _optionsHandler = new OptionsBuilder()
-            .AddOption("In memory", HandleMemoryStorageOption)
-            .AddOption("In file storage (WIP)", HandleFileStorageOption)
+            .AddOption(Options.MemoryStorage, HandleMemoryStorageOption)
+            .AddOption(Options.FileStorage, HandleFileStorageOption)
             .Build();
     }
 

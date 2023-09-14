@@ -26,7 +26,7 @@ public class DIContainerTest
     }
 
     [TestMethod]
-    public void Register_Transient()
+    public void Should_Register_Transient()
     {
         container.RegisterTransient<IList<string>, List<string>>();
         var list1 = container.Resolve<IList<string>>();
@@ -37,7 +37,7 @@ public class DIContainerTest
     }
 
     [TestMethod]
-    public void Register_Singleton()
+    public void Should_Register_Singleton()
     {
         container.RegisterSingleton<IList<string>, List<string>>();
         var list1 = container.Resolve<IList<string>>();
@@ -47,7 +47,7 @@ public class DIContainerTest
     }
 
     [TestMethod]
-    public void Register_Singleton_With_Instance()
+    public void Should_Register_Singleton_With_Instance()
     {
         var list = new List<string>() { "test" };
         container.RegisterSingleton<IList<string>>(list);
@@ -56,7 +56,7 @@ public class DIContainerTest
     }
 
     [TestMethod]
-    public void Resolve_Recursive_Types()
+    public void Should_Resolve_Recursive_Types()
     {
         var list = new List<string>() { "test" };
         container.RegisterSingleton<IList<string>>(list);

@@ -1,9 +1,9 @@
+using Journal.Application.JournalEntries;
+using Journal.Application.JournalEntries.Abstractions;
 using Journal.Application.Panels.Abstractions;
 using Journal.Application.Panels.Options;
 using Journal.Application.Panels.States.Abstractions;
 using Journal.Application.Views;
-using Journal.DataAccess.JournalEntries;
-using Journal.DataAccess.JournalEntries.Abstractions;
 using Journal.Domain.Models;
 
 namespace Journal.Application.Panels.States;
@@ -27,7 +27,7 @@ public class MenuState : IPanelState
     public MenuState(IPanelController panelController)
     {
         _panelController = panelController;
-        _journalEntryRepository = JournalRepositoryContext.JournalEntriesRepository;
+        _journalEntryRepository = JournalRepositoryContext.JournalEntryRepository;
         _optionsHandler = new OptionsBuilder()
             .AddOption("Add entry", HandleAddEntryOption)
             .Build();

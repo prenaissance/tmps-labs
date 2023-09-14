@@ -1,11 +1,11 @@
-using Journal.DataAccess.JournalEntries.Abstractions;
+using Journal.Application.JournalEntries.Abstractions;
 
-namespace Journal.DataAccess.JournalEntries;
+namespace Journal.Application.JournalEntries;
 
 public static class JournalRepositoryContext
 {
     private static IJournalEntryRepository? _journalEntryRepository;
-    public static IJournalEntryRepository JournalEntriesRepository
+    public static IJournalEntryRepository JournalEntryRepository
     {
         get
         {

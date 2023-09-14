@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using Journal.Application.Abstractions;
 namespace Journal.Application.Views;
 
@@ -19,7 +20,7 @@ public class OptionMenuView : IView
         {
             _currentIndex--;
         }
-        Console.CursorTop = _cursorTop;
+        Console.CursorTop -= _options.Count;
         Render();
     }
     private void HandleKeyDown()
@@ -32,7 +33,7 @@ public class OptionMenuView : IView
         {
             _currentIndex++;
         }
-        Console.CursorTop = _cursorTop;
+        Console.CursorTop -= _options.Count;
         Render();
     }
     private void HandleEnter()
@@ -55,6 +56,19 @@ public class OptionMenuView : IView
         );
     }
 
+    private void ListenForInput()
+    {
+        ConsoleKey key = Console.ReadKey(true).Key;
+        if (_keyHandlers.ContainsKey(key))
+        {
+            _keyHandlers[key]();
+        }
+        else
+        {
+            ListenForInput();
+        }
+    }
+
     public void Render()
     {
         for (int i = 0; i < _options.Count; i++)
@@ -71,14 +85,6 @@ public class OptionMenuView : IView
             Console.WriteLine(_options[i]);
             Console.ResetColor();
         }
-        ConsoleKey key = Console.ReadKey(true).Key;
-        if (_keyHandlers.ContainsKey(key))
-        {
-            _keyHandlers[key]();
-        }
-        else
-        {
-            throw new KeyNotFoundException($"Key '{key}' not registered, how did you get here?");
-        }
+        ListenForInput();
     }
 }
