@@ -2,6 +2,10 @@
 
 This repository contains the laboratory works for the Software Design Techniques and Mechanisms course. It consists of a single console application project.
 
+## Checkpoints
+
+To see the code at specific points, search through the git tags - `git tag` and then `git checkout <checkpoint>`
+
 ## Reports
 
 - [Lab 1](reports/lab1.md)
