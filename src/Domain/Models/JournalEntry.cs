@@ -13,6 +13,8 @@ public record JournalEntry(
     public JournalEntry Copy() => this with
     {
         Title = $"{Title} (Copy)",
-        Tags = new List<EntryTag>(Tags)
+        Tags = new List<EntryTag>(Tags),
+        CreatedAt = DateTime.Now,
+        UpdatedAt = DateTime.Now
     };
 };
