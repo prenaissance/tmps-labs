@@ -14,7 +14,9 @@ public class EntryAddedState : IPanelState
     public required JournalEntry Entry { get; set; }
     private void HandleViewEntryOption()
     {
-        throw new NotImplementedException();
+        var viewEntryState = _stateFactory.CreateState<ViewEntryState>();
+        viewEntryState.Entry = Entry;
+        _panelController.ChangeState(viewEntryState);
     }
     private void HandleAddTagsOption()
     {

@@ -1,12 +1,9 @@
 using Journal.Application.DI.Container;
-using Journal.Application.JournalEntries.Abstractions;
 using Journal.Application.Panels;
 using Journal.Application.Panels.Abstractions;
 using Journal.Application.Panels.States;
 using Journal.Application.Panels.States.Abstractions;
 using Journal.Application.Panels.States.Factory;
-using Journal.Domain.Factory.Abstractions;
-using Journal.Domain.Models;
 
 namespace Journal.Application.DI;
 
@@ -22,7 +19,9 @@ public static class Registration
         container
             .RegisterTransient<WelcomeState>()
             .RegisterTransient<MenuState>()
-            .RegisterTransient<EntryAddedState>();
+            .RegisterTransient<EntryAddedState>()
+            .RegisterTransient<ViewEntryState>()
+            .RegisterTransient<ViewEntriesState>();
 
         panelController.CurrentState = container.Resolve<WelcomeState>();
 

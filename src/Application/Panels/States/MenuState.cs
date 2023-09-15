@@ -20,11 +20,27 @@ public class MenuState : IPanelState
         string title = Console.ReadLine() ?? "";
         Console.Write("Content: ");
         string content = Console.ReadLine() ?? "";
+
         JournalEntry entry = new(title, content, new List<EntryTag>());
         _journalEntryRepository.Add(entry);
         var entryAddedState = _stateFactory.CreateState<EntryAddedState>();
         entryAddedState.Entry = entry;
         _panelController.ChangeState(entryAddedState);
+    }
+
+    private void HandleViewEntriesOption()
+    {
+        _panelController.ChangeState(_stateFactory.CreateState<ViewEntriesState>());
+    }
+
+    private void HandleViewTagsOption()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void HandleSeedEntriesOption()
+    {
+        throw new NotImplementedException();
     }
     private readonly OptionsHandler _optionsHandler;
     public MenuState(IPanelController panelController, IStateFactory stateFactory)
@@ -33,6 +49,9 @@ public class MenuState : IPanelState
         _journalEntryRepository = JournalRepositoryContext.JournalEntryRepository;
         _optionsHandler = new OptionsBuilder()
             .AddOption("Add entry", HandleAddEntryOption)
+            .AddOption("View entries", HandleViewEntriesOption)
+            .AddOption("View tags", HandleViewTagsOption)
+            .AddOption("Seed entries", HandleSeedEntriesOption)
             .Build();
         _stateFactory = stateFactory;
     }
