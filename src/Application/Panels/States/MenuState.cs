@@ -22,7 +22,9 @@ public class MenuState : IPanelState
         string content = Console.ReadLine() ?? "";
         JournalEntry entry = new(title, content, new List<EntryTag>());
         _journalEntryRepository.Add(entry);
-        _panelController.ChangeState(_stateFactory.CreateState<EntryAddedState>());
+        var entryAddedState = _stateFactory.CreateState<EntryAddedState>();
+        entryAddedState.Entry = entry;
+        _panelController.ChangeState(entryAddedState);
     }
     private readonly OptionsHandler _optionsHandler;
     public MenuState(IPanelController panelController, IStateFactory stateFactory)

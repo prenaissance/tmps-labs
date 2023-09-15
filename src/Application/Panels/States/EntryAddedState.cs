@@ -11,7 +11,7 @@ public class EntryAddedState : IPanelState
     private readonly IPanelController _panelController;
     private readonly IStateFactory _stateFactory;
 
-    private readonly JournalEntry _entry;
+    public required JournalEntry Entry { get; set; }
     private void HandleViewEntryOption()
     {
         throw new NotImplementedException();
@@ -27,11 +27,9 @@ public class EntryAddedState : IPanelState
     private readonly OptionsHandler _optionsHandler;
     public EntryAddedState(
         IPanelController panelController,
-        JournalEntry entry,
         IStateFactory stateFactory)
     {
         _panelController = panelController;
-        _entry = entry;
         _optionsHandler = new OptionsBuilder()
             .AddOption("View entry", HandleViewEntryOption)
             .AddOption("Add tags", HandleAddTagsOption)
@@ -42,7 +40,7 @@ public class EntryAddedState : IPanelState
 
     public void Render()
     {
-        Console.WriteLine($"Entry '{_entry.Title}' added");
+        Console.WriteLine($"Entry '{Entry.Title}' added");
         new OptionMenuView(_optionsHandler.Options, _optionsHandler.HandleOption).Render();
     }
 }
