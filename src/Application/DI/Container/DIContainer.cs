@@ -35,6 +35,16 @@ public class DIContainer
         return this;
     }
 
+    public DIContainer RegisterTransient<TImplementation>() where TImplementation : class
+    {
+        _typeRegistrations[typeof(TImplementation)] = new TypeRegistration(
+            typeof(TImplementation),
+            typeof(TImplementation),
+            InjectionType.Transient);
+
+        return this;
+    }
+
     public TInterface Resolve<TInterface>()
     {
         return (TInterface)Resolve(typeof(TInterface));

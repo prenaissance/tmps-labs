@@ -17,12 +17,13 @@ public class WelcomeState : IPanelState
         public const string FileStorage = "In file storage (WIP)";
     }
     private readonly IPanelController _panelController;
-    public readonly IRepositoryFactory<IJournalEntryRepository, JournalEntry> _journalEntryRepositoryFactory;
+    private readonly IRepositoryFactory<IJournalEntryRepository, JournalEntry> _journalEntryRepositoryFactory;
+    private readonly IStateFactory _stateFactory;
     private void HandleMemoryStorageOption()
     {
         JournalRepositoryContext.JournalEntryRepository = _journalEntryRepositoryFactory.CreateRepository(Options.MemoryStorage);
         _panelController.ChangeState(
-            new MenuState(_panelController)
+            _stateFactory.CreateState<MenuState>()
         );
     }
     private void HandleFileStorageOption()
@@ -32,7 +33,8 @@ public class WelcomeState : IPanelState
     private readonly OptionsHandler _optionsHandler;
     public WelcomeState(
         IPanelController panelController,
-        IRepositoryFactory<IJournalEntryRepository, JournalEntry> journalEntryRepositoryFactory)
+        IRepositoryFactory<IJournalEntryRepository, JournalEntry> journalEntryRepositoryFactory,
+        IStateFactory stateFactory)
     {
         _panelController = panelController;
         _journalEntryRepositoryFactory = journalEntryRepositoryFactory;
@@ -40,6 +42,7 @@ public class WelcomeState : IPanelState
             .AddOption(Options.MemoryStorage, HandleMemoryStorageOption)
             .AddOption(Options.FileStorage, HandleFileStorageOption)
             .Build();
+        _stateFactory = stateFactory;
     }
 
     public void Render()

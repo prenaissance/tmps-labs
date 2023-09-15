@@ -12,6 +12,7 @@ public class MenuState : IPanelState
 {
     private readonly IPanelController _panelController;
     private readonly IJournalEntryRepository _journalEntryRepository;
+    private readonly IStateFactory _stateFactory;
 
     private void HandleAddEntryOption()
     {
@@ -21,16 +22,17 @@ public class MenuState : IPanelState
         string content = Console.ReadLine() ?? "";
         JournalEntry entry = new(title, content, new List<EntryTag>());
         _journalEntryRepository.Add(entry);
-        _panelController.ChangeState(new EntryAddedState(_panelController, entry));
+        _panelController.ChangeState(_stateFactory.CreateState<EntryAddedState>());
     }
     private readonly OptionsHandler _optionsHandler;
-    public MenuState(IPanelController panelController)
+    public MenuState(IPanelController panelController, IStateFactory stateFactory)
     {
         _panelController = panelController;
         _journalEntryRepository = JournalRepositoryContext.JournalEntryRepository;
         _optionsHandler = new OptionsBuilder()
             .AddOption("Add entry", HandleAddEntryOption)
             .Build();
+        _stateFactory = stateFactory;
     }
 
     public void Render()

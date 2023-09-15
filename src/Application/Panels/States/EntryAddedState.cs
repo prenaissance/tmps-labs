@@ -9,6 +9,7 @@ namespace Journal.Application.Panels.States;
 public class EntryAddedState : IPanelState
 {
     private readonly IPanelController _panelController;
+    private readonly IStateFactory _stateFactory;
 
     private readonly JournalEntry _entry;
     private void HandleViewEntryOption()
@@ -21,10 +22,13 @@ public class EntryAddedState : IPanelState
     }
     private void HandleReturnToMenuOption()
     {
-        _panelController.ChangeState(new MenuState(_panelController));
+        _panelController.ChangeState(_stateFactory.CreateState<MenuState>());
     }
     private readonly OptionsHandler _optionsHandler;
-    public EntryAddedState(IPanelController panelController, JournalEntry entry)
+    public EntryAddedState(
+        IPanelController panelController,
+        JournalEntry entry,
+        IStateFactory stateFactory)
     {
         _panelController = panelController;
         _entry = entry;
@@ -33,6 +37,7 @@ public class EntryAddedState : IPanelState
             .AddOption("Add tags", HandleAddTagsOption)
             .AddOption("Return to menu", HandleReturnToMenuOption)
             .Build();
+        _stateFactory = stateFactory;
     }
 
     public void Render()
