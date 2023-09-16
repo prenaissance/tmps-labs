@@ -25,8 +25,6 @@ public static class StringExtensions
             { ConsoleColor.White, "\u001b[97m" }
         }
     );
-    public static string ToColor(this string str, ConsoleColor color)
-    {
-        return $"{_ansiColorDictionary[color]}{str}{COLOR_RESET}";
-    }
+    public static string ToColor(this string str, ConsoleColor color) =>
+        $"{_ansiColorDictionary[color]}{str}{_ansiColorDictionary[Console.ForegroundColor]}";
 }

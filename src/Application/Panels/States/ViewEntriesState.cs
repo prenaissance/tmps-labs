@@ -45,7 +45,7 @@ public class ViewEntriesState : IPanelState
 
     private string GetEntryString(JournalEntry entry)
     {
-        return $"Title: {entry.Title.ToColor(ConsoleColor.Gray)}\n\t\tTags: WIP";
+        return $"Title: {entry.Title.ToColor(ConsoleColor.Cyan)}    Tags: WIP";
     }
     public void Render()
     {
