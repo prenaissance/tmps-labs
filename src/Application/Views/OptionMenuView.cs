@@ -9,7 +9,19 @@ public class OptionMenuView : IView
     private int _currentIndex = 0;
     private readonly IList<string> _options;
     private readonly Action<string> _onOptionSelected;
-    private readonly int _cursorTop = Console.CursorTop;
+    private void ResetCursor()
+    {
+        Console.CursorTop = Math.Max(Console.CursorTop - Math.Min(_options.Count, Console.BufferHeight), 0);
+    }
+    private void PreRender()
+    {
+        ResetCursor();
+        for (int i = 0; i < _options.Count; i++)
+        {
+            Console.WriteLine(new string(' ', Console.BufferWidth));
+        }
+        ResetCursor();
+    }
     private void HandleKeyUp()
     {
         if (_currentIndex == 0)
@@ -20,7 +32,6 @@ public class OptionMenuView : IView
         {
             _currentIndex--;
         }
-        Console.CursorTop -= _options.Count;
         Render();
     }
     private void HandleKeyDown()
@@ -33,7 +44,6 @@ public class OptionMenuView : IView
         {
             _currentIndex++;
         }
-        Console.CursorTop -= _options.Count;
         Render();
     }
     private void HandleEnter()
@@ -59,6 +69,7 @@ public class OptionMenuView : IView
     private void ListenForInput()
     {
         ConsoleKey key = Console.ReadKey(true).Key;
+        PreRender();
         if (_keyHandlers.ContainsKey(key))
         {
             _keyHandlers[key]();

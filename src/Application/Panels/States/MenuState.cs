@@ -33,9 +33,9 @@ public class MenuState : IPanelState
         _panelController.ChangeState(_stateFactory.CreateState<ViewEntriesState>());
     }
 
-    private void HandleViewTagsOption()
+    private void HandleAddTagOption()
     {
-        throw new NotImplementedException();
+        _panelController.ChangeState(_stateFactory.CreateState<AddTagState<MenuState>>());
     }
 
     private void HandleSeedEntriesOption()
@@ -50,8 +50,8 @@ public class MenuState : IPanelState
         _optionsHandler = new OptionsBuilder()
             .AddOption("Add entry", HandleAddEntryOption)
             .AddOption("View entries", HandleViewEntriesOption)
-            .AddOption("View tags", HandleViewTagsOption)
             .AddOption("Seed entries", HandleSeedEntriesOption)
+            .AddOption("Add tag", HandleAddTagOption)
             .Build();
         _stateFactory = stateFactory;
     }

@@ -4,6 +4,7 @@ using Journal.Application.Panels.Abstractions;
 using Journal.Application.Panels.States;
 using Journal.Application.Panels.States.Abstractions;
 using Journal.Application.Panels.States.Factory;
+using Journal.Application.Tags.Factory;
 
 namespace Journal.Application.DI;
 
@@ -14,14 +15,16 @@ public static class Registration
         PanelController panelController = new PanelController();
         container
             .RegisterSingleton<IPanelController>(panelController)
-            .RegisterSingleton<IStateFactory>(new StateFactory(container));
+            .RegisterSingleton<IStateFactory>(new StateFactory(container))
+            .RegisterSingleton<ITagFactory, TagFactory>();
 
         container
             .RegisterTransient<WelcomeState>()
             .RegisterTransient<MenuState>()
             .RegisterTransient<EntryAddedState>()
             .RegisterTransient<ViewEntryState>()
-            .RegisterTransient<ViewEntriesState>();
+            .RegisterTransient<ViewEntriesState>()
+            .RegisterTransient<AddTagState<MenuState>>();
 
         panelController.CurrentState = container.Resolve<WelcomeState>();
 

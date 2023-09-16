@@ -3,16 +3,21 @@ using Journal.Application.Panels.States.Abstractions;
 
 namespace Journal.Application.Views.Decorators;
 
-public class ClearConsoleViewDecorator : IPanelState
+public class WelcomeMessageViewDecorator : IPanelState
 {
     private readonly IView _view;
-    public ClearConsoleViewDecorator(IView view)
+    private readonly string _message;
+
+    public WelcomeMessageViewDecorator(IView view, string message)
     {
         _view = view;
+        _message = message;
     }
+
     public void Render()
     {
-        Console.Clear();
+        Console.WriteLine(_message);
+        Console.WriteLine();
         _view.Render();
     }
 }
