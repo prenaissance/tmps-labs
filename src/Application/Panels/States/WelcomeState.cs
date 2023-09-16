@@ -4,6 +4,7 @@ using Journal.Application.Panels.Abstractions;
 using Journal.Application.Panels.Options;
 using Journal.Application.Panels.States.Abstractions;
 using Journal.Application.Views;
+using Journal.Application.Views.Decorators;
 using Journal.Domain.Factory.Abstractions;
 using Journal.Domain.Models;
 
@@ -22,8 +23,9 @@ public class WelcomeState : IPanelState
     private void HandleMemoryStorageOption()
     {
         JournalRepositoryContext.JournalEntryRepository = _journalEntryRepositoryFactory.CreateRepository(Options.MemoryStorage);
+        var menuState = _stateFactory.CreateState<MenuState>();
         _panelController.ChangeState(
-            _stateFactory.CreateState<MenuState>()
+            new ClearConsoleViewDecorator(menuState)
         );
     }
     private void HandleFileStorageOption()
@@ -50,6 +52,7 @@ public class WelcomeState : IPanelState
         Console.WriteLine("Welcome to the Journal Application!");
         Console.WriteLine("You can make journal entries, tag them and some other operations.");
         Console.WriteLine("Please select where you want to store your journal entries:");
+        Console.WriteLine();
         new OptionMenuView(_optionsHandler.Options, _optionsHandler.HandleOption).Render();
     }
 }

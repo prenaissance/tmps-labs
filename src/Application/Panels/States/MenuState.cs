@@ -4,6 +4,7 @@ using Journal.Application.Panels.Abstractions;
 using Journal.Application.Panels.Options;
 using Journal.Application.Panels.States.Abstractions;
 using Journal.Application.Views;
+using Journal.Application.Views.Decorators;
 using Journal.Domain.Models;
 
 namespace Journal.Application.Panels.States;
@@ -16,26 +17,20 @@ public class MenuState : IPanelState
 
     private void HandleAddEntryOption()
     {
-        Console.Write("Title: ");
-        string title = Console.ReadLine() ?? "";
-        Console.Write("Content: ");
-        string content = Console.ReadLine() ?? "";
-
-        JournalEntry entry = new(title, content, new List<EntryTag>());
-        _journalEntryRepository.Add(entry);
-        var entryAddedState = _stateFactory.CreateState<EntryAddedState>();
-        entryAddedState.Entry = entry;
-        _panelController.ChangeState(entryAddedState);
+        var newState = new ClearConsoleViewDecorator(_stateFactory.CreateState<AddEntryState>());
+        _panelController.ChangeState(newState);
     }
 
     private void HandleViewEntriesOption()
     {
-        _panelController.ChangeState(_stateFactory.CreateState<ViewEntriesState>());
+        var newState = new ClearConsoleViewDecorator(_stateFactory.CreateState<ViewEntriesState>());
+        _panelController.ChangeState(newState);
     }
 
     private void HandleAddTagOption()
     {
-        _panelController.ChangeState(_stateFactory.CreateState<AddTagState<MenuState>>());
+        var newState = new ClearConsoleViewDecorator(_stateFactory.CreateState<AddTagState<MenuState>>());
+        _panelController.ChangeState(newState);
     }
 
     private void HandleSeedEntriesOption()

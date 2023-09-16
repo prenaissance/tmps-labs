@@ -23,8 +23,10 @@ public class AddTagState<NextStateT> : IPanelState where NextStateT : IPanelStat
 
         IPanelState nextState = _stateFactory.CreateState<NextStateT>();
         string welcomeMessage = $"Tag '{_name}' added".ToColor(ConsoleColor.Green);
-        var welcomeMessageNextState = new WelcomeMessageViewDecorator(nextState, welcomeMessage);
-        _panelController.ChangeState(welcomeMessageNextState);
+        var newState = new ClearConsoleViewDecorator(
+            new WelcomeMessageViewDecorator(nextState, welcomeMessage)
+        );
+        _panelController.ChangeState(newState);
     }
     public AddTagState(IPanelController panelController, IStateFactory stateFactory, ITagFactory tagFactory)
     {

@@ -2,6 +2,7 @@ using Journal.Application.Panels.Abstractions;
 using Journal.Application.Panels.Options;
 using Journal.Application.Panels.States.Abstractions;
 using Journal.Application.Views;
+using Journal.Application.Views.Decorators;
 using Journal.Domain.Models;
 
 namespace Journal.Application.Panels.States;
@@ -16,7 +17,7 @@ public class EntryAddedState : IPanelState
     {
         var viewEntryState = _stateFactory.CreateState<ViewEntryState>();
         viewEntryState.Entry = Entry;
-        _panelController.ChangeState(viewEntryState);
+        _panelController.ChangeState(new ClearConsoleViewDecorator(viewEntryState));
     }
     private void HandleAddTagsOption()
     {
@@ -24,7 +25,7 @@ public class EntryAddedState : IPanelState
     }
     private void HandleReturnToMenuOption()
     {
-        _panelController.ChangeState(_stateFactory.CreateState<MenuState>());
+        _panelController.ChangeState(new ClearConsoleViewDecorator(_stateFactory.CreateState<MenuState>()));
     }
     private readonly OptionsHandler _optionsHandler;
     public EntryAddedState(
@@ -43,6 +44,7 @@ public class EntryAddedState : IPanelState
     public void Render()
     {
         Console.WriteLine($"Entry '{Entry.Title}' added");
+
         new OptionMenuView(_optionsHandler.Options, _optionsHandler.HandleOption).Render();
     }
 }

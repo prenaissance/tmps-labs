@@ -21,6 +21,7 @@ public static class Registration
         container
             .RegisterTransient<WelcomeState>()
             .RegisterTransient<MenuState>()
+            .RegisterTransient<AddEntryState>()
             .RegisterTransient<EntryAddedState>()
             .RegisterTransient<ViewEntryState>()
             .RegisterTransient<ViewEntriesState>()
