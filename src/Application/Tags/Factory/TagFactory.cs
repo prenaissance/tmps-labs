@@ -4,6 +4,7 @@ namespace Journal.Application.Tags.Factory;
 
 public class TagFactory : ITagFactory
 {
+    // should ideally be a weak dictionary
     private readonly Dictionary<string, EntryTag> _instancesDictionary = new() {
         { $"Important:{ConsoleColor.Red}", new EntryTag("Important", ConsoleColor.Red) }
     };

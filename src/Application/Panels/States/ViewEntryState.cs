@@ -29,7 +29,8 @@ public class ViewEntryState : IPanelState
     }
     private void EditTagsOption()
     {
-        throw new NotImplementedException();
+        var setTagsState = _stateFactory.CreateState<SetTagsState<ViewEntryState>>(_entry);
+        _panelController.ChangeState(new ClearConsoleViewDecorator(setTagsState));
     }
     private void HandleReturnToMenuOption()
     {
