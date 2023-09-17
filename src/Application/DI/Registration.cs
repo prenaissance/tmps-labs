@@ -25,7 +25,9 @@ public static class Registration
             .RegisterTransient<EntryAddedState>()
             .RegisterTransient<ViewEntryState>()
             .RegisterTransient<ViewEntriesState>()
-            .RegisterTransient<AddTagState<MenuState>>();
+            .RegisterTransient<CreateTagState<MenuState>>()
+            .RegisterTransient<SetTagsState<EntryAddedState>>()
+            .RegisterTransient<SetTagsState<ViewEntryState>>();
 
         panelController.CurrentState = container.Resolve<WelcomeState>();
 

@@ -8,7 +8,7 @@ using Journal.Application.Views.Decorators;
 
 namespace Journal.Application.Panels.States;
 
-public class AddTagState<NextStateT> : IPanelState where NextStateT : IPanelState
+public class CreateTagState<NextStateT> : IPanelState where NextStateT : IPanelState
 {
     private readonly IPanelController _panelController;
     private readonly IStateFactory _stateFactory;
@@ -28,7 +28,7 @@ public class AddTagState<NextStateT> : IPanelState where NextStateT : IPanelStat
         );
         _panelController.ChangeState(newState);
     }
-    public AddTagState(IPanelController panelController, IStateFactory stateFactory, ITagFactory tagFactory)
+    public CreateTagState(IPanelController panelController, IStateFactory stateFactory, ITagFactory tagFactory)
     {
         _panelController = panelController;
         _stateFactory = stateFactory;
@@ -37,9 +37,12 @@ public class AddTagState<NextStateT> : IPanelState where NextStateT : IPanelStat
 
     public void Render()
     {
+        Console.CursorVisible = true;
         Console.Write("Enter tag name: ");
         _name = Console.ReadLine() ?? "";
         Console.WriteLine("Select tag color:");
+        Console.CursorVisible = false;
+
         new OptionMenuView(AnsiColors.ansiColors, HandleSelectTagColor).Render();
     }
 }

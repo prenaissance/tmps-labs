@@ -18,8 +18,7 @@ public class ViewEntriesState : IPanelState
     private readonly IList<JournalEntry> _entries;
     private Action GetHandleViewEntryOption(JournalEntry entry) => () =>
     {
-        var viewEntryState = _stateFactory.CreateState<ViewEntryState>();
-        viewEntryState.Entry = entry;
+        var viewEntryState = _stateFactory.CreateState<ViewEntryState>(entry);
         _panelController.ChangeState(new ClearConsoleViewDecorator(viewEntryState));
     };
     private void HandleReturnToMenuOption()

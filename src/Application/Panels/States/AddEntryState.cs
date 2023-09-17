@@ -1,3 +1,4 @@
+using Journal.Application.Extensions;
 using Journal.Application.JournalEntries;
 using Journal.Application.JournalEntries.Abstractions;
 using Journal.Application.Panels.Abstractions;
@@ -21,17 +22,23 @@ public class AddEntryState : IPanelState
     public void Render()
     {
         Console.WriteLine("Add Entry");
+        Console.WriteLine();
+        Console.CursorVisible = true;
 
         Console.Write("Title: ");
         string title = Console.ReadLine() ?? "";
         Console.Write("Content: ");
         string content = Console.ReadLine() ?? "";
+        Console.CursorVisible = false;
 
         JournalEntry entry = new(title, content, new List<EntryTag>());
         _journalEntryRepository.Add(entry);
-        var entryAddedState = _stateFactory.CreateState<EntryAddedState>();
-        entryAddedState.Entry = entry;
-        var newState = new ClearConsoleViewDecorator(entryAddedState);
+        var entryAddedState = _stateFactory.CreateState<EntryAddedState>(entry);
+
+        string welcomeMessage = $"Entry '{entry.Title}' added".ToColor(ConsoleColor.Green);
+        var newState = new ClearConsoleViewDecorator(
+            new WelcomeMessageViewDecorator(entryAddedState, welcomeMessage)
+        );
         _panelController.ChangeState(newState);
     }
 }

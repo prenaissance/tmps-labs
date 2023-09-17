@@ -11,17 +11,16 @@ public class EntryAddedState : IPanelState
 {
     private readonly IPanelController _panelController;
     private readonly IStateFactory _stateFactory;
-
-    public required JournalEntry Entry { get; set; }
+    private readonly JournalEntry _entry;
     private void HandleViewEntryOption()
     {
-        var viewEntryState = _stateFactory.CreateState<ViewEntryState>();
-        viewEntryState.Entry = Entry;
+        var viewEntryState = _stateFactory.CreateState<ViewEntryState>(_entry);
         _panelController.ChangeState(new ClearConsoleViewDecorator(viewEntryState));
     }
-    private void HandleAddTagsOption()
+    private void HandleSetTagsOption()
     {
-        throw new NotImplementedException();
+        var setTagsState = _stateFactory.CreateState<SetTagsState<EntryAddedState>>(_entry);
+        _panelController.ChangeState(new ClearConsoleViewDecorator(setTagsState));
     }
     private void HandleReturnToMenuOption()
     {
@@ -30,21 +29,21 @@ public class EntryAddedState : IPanelState
     private readonly OptionsHandler _optionsHandler;
     public EntryAddedState(
         IPanelController panelController,
-        IStateFactory stateFactory)
+        IStateFactory stateFactory,
+        JournalEntry entry)
     {
         _panelController = panelController;
+        _stateFactory = stateFactory;
+        _entry = entry;
         _optionsHandler = new OptionsBuilder()
             .AddOption("View entry", HandleViewEntryOption)
-            .AddOption("Add tags", HandleAddTagsOption)
+            .AddOption("Add tags", HandleSetTagsOption)
             .AddOption("Return to menu", HandleReturnToMenuOption)
             .Build();
-        _stateFactory = stateFactory;
     }
 
     public void Render()
     {
-        Console.WriteLine($"Entry '{Entry.Title}' added");
-
         new OptionMenuView(_optionsHandler.Options, _optionsHandler.HandleOption).Render();
     }
 }

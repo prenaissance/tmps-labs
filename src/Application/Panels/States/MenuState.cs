@@ -29,7 +29,7 @@ public class MenuState : IPanelState
 
     private void HandleAddTagOption()
     {
-        var newState = new ClearConsoleViewDecorator(_stateFactory.CreateState<AddTagState<MenuState>>());
+        var newState = new ClearConsoleViewDecorator(_stateFactory.CreateState<CreateTagState<MenuState>>());
         _panelController.ChangeState(newState);
     }
 
@@ -46,7 +46,7 @@ public class MenuState : IPanelState
             .AddOption("Add entry", HandleAddEntryOption)
             .AddOption("View entries", HandleViewEntriesOption)
             .AddOption("Seed entries", HandleSeedEntriesOption)
-            .AddOption("Add tag", HandleAddTagOption)
+            .AddOption("Create tag", HandleAddTagOption)
             .Build();
         _stateFactory = stateFactory;
     }

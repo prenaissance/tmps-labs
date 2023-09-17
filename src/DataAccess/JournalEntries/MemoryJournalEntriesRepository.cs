@@ -60,11 +60,12 @@ public class MemoryJournalEntryRepository : IJournalEntryRepository
 
     public Task<JournalEntry> Update(JournalEntry entity)
     {
-        int journalEntryIndex = _journalEntries.IndexOf(entity);
-        if (journalEntryIndex == -1)
+        JournalEntry? oldEntry = _journalEntries.FirstOrDefault(je => je.Id == entity.Id);
+        if (oldEntry is null)
         {
             throw new ArgumentException($"Journal entry with id {entity.Id} does not exist, tried to update");
         }
+        int journalEntryIndex = _journalEntries.IndexOf(oldEntry);
         _journalEntries[journalEntryIndex] = entity;
         return Task.FromResult(entity);
     }

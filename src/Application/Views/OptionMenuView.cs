@@ -1,7 +1,6 @@
-using System.Collections.Immutable;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using Journal.Application.Abstractions;
+using Journal.Application.Views.Utilities;
 namespace Journal.Application.Views;
 
 public class OptionMenuView : IView
@@ -9,19 +8,6 @@ public class OptionMenuView : IView
     private int _currentIndex = 0;
     private readonly IList<string> _options;
     private readonly Action<string> _onOptionSelected;
-    private void ResetCursor()
-    {
-        Console.CursorTop = Math.Max(Console.CursorTop - Math.Min(_options.Count, Console.BufferHeight), 0);
-    }
-    private void PreRender()
-    {
-        ResetCursor();
-        for (int i = 0; i < _options.Count; i++)
-        {
-            Console.WriteLine(new string(' ', Console.BufferWidth));
-        }
-        ResetCursor();
-    }
     private void HandleKeyUp()
     {
         if (_currentIndex == 0)
@@ -69,9 +55,9 @@ public class OptionMenuView : IView
     private void ListenForInput()
     {
         ConsoleKey key = Console.ReadKey(true).Key;
-        PreRender();
         if (_keyHandlers.ContainsKey(key))
         {
+            ConsoleUtilities.PreRender(_options.Count);
             _keyHandlers[key]();
         }
         else
