@@ -1,4 +1,5 @@
 using Journal.Application.DI.Container;
+using Journal.Application.JournalEntries;
 using Journal.Application.Panels;
 using Journal.Application.Panels.Abstractions;
 using Journal.Application.Panels.States;
@@ -16,7 +17,8 @@ public static class Registration
         container
             .RegisterSingleton<IPanelController>(panelController)
             .RegisterSingleton<IStateFactory>(new StateFactory(container))
-            .RegisterSingleton<ITagFactory, TagFactory>();
+            .RegisterSingleton<ITagFactory, TagFactory>()
+            .RegisterSingleton<JournalEntriesSeeding>();
 
         container
             .RegisterTransient<WelcomeState>()

@@ -6,5 +6,6 @@ public interface IRepository<T> where T : Entity
     Task<IList<T>> GetAll();
     Task<T> Add(T entity);
     Task<T> Update(T entity);
+    Task<T> Upsert(T entity);
     Task<T> Delete(Guid id);
 }

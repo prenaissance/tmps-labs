@@ -1,3 +1,4 @@
+using Journal.Application.Extensions;
 using Journal.Application.JournalEntries;
 using Journal.Application.JournalEntries.Abstractions;
 using Journal.Application.Panels.Abstractions;
@@ -12,7 +13,7 @@ namespace Journal.Application.Panels.States;
 public class MenuState : IPanelState
 {
     private readonly IPanelController _panelController;
-    private readonly IJournalEntryRepository _journalEntryRepository;
+    private readonly JournalEntriesSeeding _journalEntriesSeeding;
     private readonly IStateFactory _stateFactory;
 
     private void HandleAddEntryOption()
@@ -35,20 +36,26 @@ public class MenuState : IPanelState
 
     private void HandleSeedEntriesOption()
     {
-        throw new NotImplementedException();
+        _journalEntriesSeeding.SeedEntriesAsync().Wait();
+
+        string message = "Entries seeded successfully".ToColor(ConsoleColor.Green);
+        var newState = new ClearConsoleViewDecorator(
+            new WelcomeMessageViewDecorator(_stateFactory.CreateState<MenuState>(), message)
+        );
+        _panelController.ChangeState(newState);
     }
     private readonly OptionsHandler _optionsHandler;
-    public MenuState(IPanelController panelController, IStateFactory stateFactory)
+    public MenuState(IPanelController panelController, IStateFactory stateFactory, JournalEntriesSeeding journalEntriesSeeding)
     {
         _panelController = panelController;
-        _journalEntryRepository = JournalRepositoryContext.JournalEntryRepository;
+        _stateFactory = stateFactory;
+        _journalEntriesSeeding = journalEntriesSeeding;
         _optionsHandler = new OptionsBuilder()
             .AddOption("Add entry", HandleAddEntryOption)
             .AddOption("View entries", HandleViewEntriesOption)
             .AddOption("Seed entries", HandleSeedEntriesOption)
             .AddOption("Create tag", HandleAddTagOption)
             .Build();
-        _stateFactory = stateFactory;
     }
 
     public void Render()

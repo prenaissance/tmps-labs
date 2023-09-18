@@ -110,14 +110,22 @@ public class FileJournalEntryRepository : IJournalEntryRepository
     public async Task<JournalEntry> Update(JournalEntry entity)
     {
         var (journalEntries, fileStream) = await GetJournalEntries();
-        JournalEntry? oldEntry = journalEntries.FirstOrDefault(je => je.Id == entity.Id);
-        if (oldEntry is null)
-        {
-            throw new ArgumentException($"Journal entry with id {entity.Id} does not exist");
-        }
-        journalEntries.Remove(oldEntry);
-        journalEntries.Add(entity);
+        JournalEntry? oldEntry = journalEntries.FirstOrDefault(je => je.Id == entity.Id)
+            ?? throw new ArgumentException($"Journal entry with id {entity.Id} does not exist");
+
+        int journalEntryIndex = journalEntries.IndexOf(oldEntry);
+        journalEntries[journalEntryIndex] = entity;
         await SerializeEntriesAsync(journalEntries, fileStream);
         return entity;
+    }
+
+    public async Task<JournalEntry> Upsert(JournalEntry entity)
+    {
+        JournalEntry? oldEntry = await GetById(entity.Id);
+        if (oldEntry is null)
+        {
+            return await Add(entity);
+        }
+        return await Update(entity);
     }
 }

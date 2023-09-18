@@ -4,6 +4,7 @@ using Journal.Application.JournalEntries.Abstractions;
 using Journal.Application.Panels.Abstractions;
 using Journal.Application.Panels.Options;
 using Journal.Application.Panels.States.Abstractions;
+using Journal.Application.Tags.Utilities;
 using Journal.Application.Views;
 using Journal.Application.Views.Decorators;
 using Journal.Domain.Models;
@@ -45,7 +46,7 @@ public class ViewEntriesState : IPanelState
 
     private string GetEntryString(JournalEntry entry)
     {
-        return $"Title: {entry.Title.ToColor(ConsoleColor.Cyan)}    Tags: WIP";
+        return $"Title: {entry.Title.ToColor(ConsoleColor.Cyan)}    Tags: {TagUtilities.GetFormattedTags(entry.Tags)}";
     }
     public void Render()
     {

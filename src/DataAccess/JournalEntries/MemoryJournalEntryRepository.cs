@@ -69,4 +69,19 @@ public class MemoryJournalEntryRepository : IJournalEntryRepository
         _journalEntries[journalEntryIndex] = entity;
         return Task.FromResult(entity);
     }
+
+    public Task<JournalEntry> Upsert(JournalEntry entity)
+    {
+        JournalEntry? oldEntry = _journalEntries.FirstOrDefault(je => je.Id == entity.Id);
+        if (oldEntry is null)
+        {
+            _journalEntries.Add(entity);
+        }
+        else
+        {
+            int journalEntryIndex = _journalEntries.IndexOf(oldEntry);
+            _journalEntries[journalEntryIndex] = entity;
+        }
+        return Task.FromResult(entity);
+    }
 }

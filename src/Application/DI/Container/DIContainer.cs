@@ -15,6 +15,15 @@ public class DIContainer
 
         return this;
     }
+    public DIContainer RegisterSingleton<TImplementation>() where TImplementation : class
+    {
+        _typeRegistrations[typeof(TImplementation)] = new TypeRegistration(
+            typeof(TImplementation),
+            typeof(TImplementation),
+            InjectionType.Singleton);
+
+        return this;
+    }
     public DIContainer RegisterSingleton<TInterface>(TInterface instance) where TInterface : notnull
     {
         _singletonInstances[typeof(TInterface)] = instance;
