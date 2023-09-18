@@ -15,7 +15,7 @@ public class WelcomeState : IPanelState
     public static class Options
     {
         public const string MemoryStorage = "In memory";
-        public const string FileStorage = "In file storage (WIP)";
+        public const string FileStorage = "In file storage";
     }
     private readonly IPanelController _panelController;
     private readonly IRepositoryFactory<IJournalEntryRepository, JournalEntry> _journalEntryRepositoryFactory;
@@ -30,7 +30,11 @@ public class WelcomeState : IPanelState
     }
     private void HandleFileStorageOption()
     {
-        throw new NotImplementedException();
+        JournalRepositoryContext.JournalEntryRepository = _journalEntryRepositoryFactory.CreateRepository(Options.FileStorage);
+        var menuState = _stateFactory.CreateState<MenuState>();
+        _panelController.ChangeState(
+            new ClearConsoleViewDecorator(menuState)
+        );
     }
     private readonly OptionsHandler _optionsHandler;
     public WelcomeState(

@@ -12,13 +12,16 @@ public static class Registration
 {
     public static DIContainer RegisterDataAccessTypes(this DIContainer container)
     {
+        container
+            .RegisterTransient<MemoryJournalEntryRepository>()
+            .RegisterTransient<FileJournalEntryRepository>();
         RepositoryFactory<IJournalEntryRepository, JournalEntry> repositoryFactory = new();
         repositoryFactory.Register(
             WelcomeState.Options.MemoryStorage,
-            () => new MemoryJournalEntryRepository());
+            container.Resolve<MemoryJournalEntryRepository>);
         repositoryFactory.Register(
             WelcomeState.Options.FileStorage,
-            () => throw new Exception("File storage not implemented"));
+            container.Resolve<FileJournalEntryRepository>);
 
         container.RegisterSingleton<IRepositoryFactory<IJournalEntryRepository, JournalEntry>>(repositoryFactory);
         return container;

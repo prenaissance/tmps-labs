@@ -28,7 +28,7 @@ public class SetTagsState<NextStateT> : IPanelState where NextStateT : IPanelSta
         };
         _journalEntryRepository.Update(newEntry);
 
-        IPanelState nextState = _stateFactory.CreateState<NextStateT>(_entry);
+        IPanelState nextState = _stateFactory.CreateState<NextStateT>(newEntry);
         string welcomeMessage = $"Tags for entry '{_entry.Title}' edited".ToColor(ConsoleColor.Green);
         var newState = new ClearConsoleViewDecorator(
             new WelcomeMessageViewDecorator(nextState, welcomeMessage)
