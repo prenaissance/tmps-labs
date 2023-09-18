@@ -1,4 +1,6 @@
 using Journal.Application.Extensions;
+using Journal.Application.JournalEntries;
+using Journal.Application.JournalEntries.Abstractions;
 using Journal.Application.Panels.Abstractions;
 using Journal.Application.Panels.Options;
 using Journal.Application.Panels.States.Abstractions;
@@ -13,19 +15,37 @@ public class ViewEntryState : IPanelState
 {
     private readonly IPanelController _panelController;
     private readonly IStateFactory _stateFactory;
+    private readonly IJournalEntryRepository _journalEntryRepository;
     private readonly OptionsHandler _optionsHandler;
     private readonly JournalEntry _entry;
     private void HandleEditEntryOption()
     {
-        throw new NotImplementedException();
+        string message = "I changed my mind! I'm not going to implement this!".ToColor(ConsoleColor.Red);
+
+        var newState = new ClearConsoleViewDecorator(
+            new WelcomeMessageViewDecorator(_stateFactory.CreateState<ViewEntryState>(_entry), message)
+        );
+        _panelController.ChangeState(newState);
     }
     private void HandleDeleteEntryOption()
     {
-        throw new NotImplementedException();
+        _journalEntryRepository.Delete(_entry.Id).Wait();
+        string message = $"Entry {_entry.Title} deleted successfully".ToColor(ConsoleColor.Green);
+        var newState = new ClearConsoleViewDecorator(
+            new WelcomeMessageViewDecorator(_stateFactory.CreateState<ViewEntriesState>(), message)
+        );
+        _panelController.ChangeState(newState);
     }
     private void CopyEntryOption()
     {
-        throw new NotImplementedException();
+        JournalEntry copiedEntry = _entry.Copy();
+        _journalEntryRepository.Add(copiedEntry).Wait();
+
+        string message = $"Entry {_entry.Title} copied successfully".ToColor(ConsoleColor.Green);
+        var newState = new ClearConsoleViewDecorator(
+            new WelcomeMessageViewDecorator(_stateFactory.CreateState<EntryAddedState>(copiedEntry), message)
+        );
+        _panelController.ChangeState(newState);
     }
     private void EditTagsOption()
     {
@@ -41,6 +61,7 @@ public class ViewEntryState : IPanelState
         _panelController = panelController;
         _stateFactory = stateFactory;
         _entry = entry;
+        _journalEntryRepository = JournalRepositoryContext.JournalEntryRepository;
         _optionsHandler = new OptionsBuilder()
             .AddOption("Edit entry", HandleEditEntryOption)
             .AddOption("Delete entry", HandleDeleteEntryOption)
