@@ -204,7 +204,7 @@ _panelController.ChangeState(newState);
 
 And the result, allowing a state to be reused in different places with altered results. The following image shows the decorated `MenuState` changed after creating a tag from the menu:
 
-![feedback message decorator](./images/feedback-message-decorator.png)
+![feedback message decorator](./images/feedback_message_decorator.png)
 
 ### Repository
 
